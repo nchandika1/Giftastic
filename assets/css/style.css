@@ -1,0 +1,40 @@
+body {
+	background-image: url("../images/world-map.jpg");
+	width:100%;
+}
+
+.container {
+	margin: 0 !important;
+}
+
+.country-buttons {
+	color: gray;
+	margin:10px;
+	float: left;
+}
+
+.country {
+	margin: 10px;
+	color: purple;
+	border: 1px solid black;
+}
+
+.country-gifs {
+	float:left;	
+}
+
+.image-style {
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.form-box {
+	float: center;
+}
+
+#submit {
+	margin-top:10px;
+	border-style: outset;
+	background-color: teal;
+	border-radius:5px;
+}
