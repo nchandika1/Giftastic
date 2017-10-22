@@ -74,7 +74,7 @@ $(document).ready(function() {
 
 		// Make sure to not refresh the page when the submit button is clicked
 		event.preventDefault();
-		var searchTerm = $("#country-input").val().trim();
+		var searchTerm = $("#country-input").val().trim().toLowerCase();
 
 		// Add the topic only if it doesn't already exist and it is not an empty string
 		if (searchTerm !== "" && !countries.includes(searchTerm)) {
