@@ -1,24 +1,30 @@
 body {
-	background-image: url("../images/world-map.jpg");
+	background-image: url("../images/memphis-colorful.png");
 	width:100%;
 }
 
 .container {
 	margin: 0 !important;
+	width: 100% !important;
 }
 
+/* Following two classes define country buttons */
 .country-buttons {
 	color: gray;
 	margin:10px;
 	float: left;
 }
 
-.country {
-	margin: 10px;
-	color: purple;
-	border: 1px solid black;
+.country-btn {
+	margin:10px;
+	border-style: outset;
+	background-color: teal;
+	border-radius:5px;
+	color: white;
+
 }
 
+/* following two classes define country images */
 .country-gifs {
 	float:left;	
 }
@@ -28,17 +34,16 @@ body {
 	margin-bottom: 10px;
 }
 
+/* following two classes define form and submit */
 .form-box {
 	float: center;
 }
 
-#country-input {
-	text-transform: capitalize;
-}
-
+/* Style for the Submit button */
 #country-submit {
 	margin-top:10px;
 	border-style: outset;
 	background-color: teal;
 	border-radius:5px;
+	color: white;
 }

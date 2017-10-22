@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 	// Array to store the initial set of topics.  More buttons get added dynamically
 	// via the form submission
-	var countries=["USA", "Thailand", "Egypt", "South Africa", "India", "Austria", "Burma"]; 
+	var countries=["usa", "thailand", "egypt", "south africa", "india", "austria", "burma", "scotland", "kenya", "greece", "canada", "chile", "australia"]; 
 
 	function createTopicButtons() {
 
@@ -11,12 +11,10 @@ $(document).ready(function() {
 
 		// Create buttons from the countries array
 		countries.forEach(function(item, index) {
-			// Empty the buttons and replace with the updated list of country buttons
-
 			// Create buttons with class=country and data-name attribute
 			var btn = $("<button>");
 			btn.text(item);
-			btn.attr("class", "country");
+			btn.attr("class", "country-btn");
 			btn.attr("data-name", item);
 			$('.country-buttons').append(btn);
 		});
@@ -35,7 +33,6 @@ $(document).ready(function() {
 		// AJAX call to get 10 GIPHY images for the chosen topic.  10 is hard coded for now
 		var giphy = $.get("http://api.giphy.com/v1/gifs/search?q=" + name + "&api_key=vfcKAiR8GqpGWVmN6lUpQozaOf9j68Gi&limit=10");
 		giphy.done(function(response) {
-			console.log(response);
 
 			// Get the array of GIPHY images from the JSON
 			var imageArray = response.data;
@@ -71,21 +68,34 @@ $(document).ready(function() {
 		}
 	}
 
-	/* Add submit button code here */
-	$("#country-submit").on("click", function(event) {
+	// Click function for the Submit Button
+	function clickSubmitButton(event){
 		console.log("Click Submit Button");
-		event.preventDefault();
-		searchTerm = $("#country-input").val().trim();
-		countries.push(searchTerm);
 
-		// Recreate topic buttons with the updated list of countries
-		createTopicButtons();
-	});
+		// Make sure to not refresh the page when the submit button is clicked
+		event.preventDefault();
+		var searchTerm = $("#country-input").val().trim();
+
+		// Add the topic only if it doesn't already exist and it is not an empty string
+		if (searchTerm !== "" && !countries.includes(searchTerm)) {
+			countries.push(searchTerm);
+
+			// Recreate topic buttons with the updated list of countries
+			createTopicButtons();
+		}
+
+		// Clear the text area when done
+		$("#country-input").val("");
+	}
 
 	// Create buttons from the initial topics array;
 	createTopicButtons();
 
-	$(document).on("click", ".country", clickCountryButton);
+	// Click handlers for country buttons
+	$(document).on("click", ".country-btn", clickCountryButton);
+	// Click handler for toggling GIPHY images
 	$(document).on("click", ".image-style", toggleGiphyImages);
+	// Click handler for submit buton
+	$(document).on("click", "#country-submit", clickSubmitButton);
 
 });
