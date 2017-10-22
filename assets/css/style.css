@@ -32,7 +32,11 @@ body {
 	float: center;
 }
 
-#submit {
+#country-input {
+	text-transform: capitalize;
+}
+
+#country-submit {
 	margin-top:10px;
 	border-style: outset;
 	background-color: teal;

@@ -1,55 +1,91 @@
-var countries=["thailand", "egypt", "south africa", "india", "jordan", "burma"]; 
-				// "india", "netherlands", "canada", "usa", "brazil", "portugal", "greece"];
+$(document).ready(function() {
 
-// Create the initial set of buttons based on the pre-built array
-countries.forEach(function(item, index){
-	console.log(item, index);
-	var btn = $("<button>");
-	btn.text(item);
-	var dataStr = "data-" + item;
-	btn.attr("data-name", item);
-	btn.attr("class", "country");
-	$('.country-buttons').append(btn);
-	console.log($(btn).attr("data-name"));
-});
+	// Array to store the initial set of topics.  More buttons get added dynamically
+	// via the form submission
+	var countries=["USA", "Thailand", "Egypt", "South Africa", "India", "Austria", "Burma"]; 
 
-// Click function for the buttons
-// Giffy API key: vfcKAiR8GqpGWVmN6lUpQozaOf9j68Gi
+	function createTopicButtons() {
 
-function clickCountryButton() {
+		//  Let us clear the buttons first before replacing them with new set
+		$('.country-buttons').empty();
 
-	// Empty the country images
-	$("#country-images").empty();
-	var name = $(this).attr("data-name");
-	var giphy = $.get("http://api.giphy.com/v1/gifs/search?q=" + name + "&api_key=vfcKAiR8GqpGWVmN6lUpQozaOf9j68Gi&limit=10");
-	giphy.done(function(response) {
-		console.log(response);
+		// Create buttons from the countries array
+		countries.forEach(function(item, index) {
+			// Empty the buttons and replace with the updated list of country buttons
 
-		// Get the array of 10 images
-		var imageArray = response.data;
-		imageArray.forEach(function(item, index) {
-			var imgURL1 = imageArray[index].images.fixed_height_small_still.url;
-				// var imgURL2 = imageArray[index].images.fixed_height_small.url;
-			console.log(imgURL1);
-			var countryDiv = $("<div class=\"country-gifs\"></div>");
-			var image = $("<img>");
-			image.attr("src", imgURL1);
-			// image.attr("src", imgURL2);
-			image.attr("class", "image-style");
-			console.log($(image));
-			$(countryDiv).append("<p>Rating: " + imageArray[index].rating.toUpperCase() + "</p>");
-			$(countryDiv).append(image);
-			$('#country-images').append(countryDiv);
+			// Create buttons with class=country and data-name attribute
+			var btn = $("<button>");
+			btn.text(item);
+			btn.attr("class", "country");
+			btn.attr("data-name", item);
+			$('.country-buttons').append(btn);
 		});
+	}
+
+	// Click function for the buttons
+	// Giffy API key: vfcKAiR8GqpGWVmN6lUpQozaOf9j68Gi
+	function clickCountryButton() {
+
+		// Let us empty the images before displaying the images of the current topic
+		$("#country-images").empty();
+		
+		// Retrieve the data attribute to get the name of the topic from the button
+		var name = $(this).attr("data-name");
+
+		// AJAX call to get 10 GIPHY images for the chosen topic.  10 is hard coded for now
+		var giphy = $.get("http://api.giphy.com/v1/gifs/search?q=" + name + "&api_key=vfcKAiR8GqpGWVmN6lUpQozaOf9j68Gi&limit=10");
+		giphy.done(function(response) {
+			console.log(response);
+
+			// Get the array of GIPHY images from the JSON
+			var imageArray = response.data;
+			imageArray.forEach(function(item, index) {
+
+				// Each image is contained in its own div element
+				var countryDiv = $("<div class=\"country-gifs\"></div>");
+				var image = $("<img>");
+
+				//  Create image tag here and the corresponding data attributes to help toggle images
+				image.attr("src", imageArray[index].images.fixed_height_still.url);
+				image.attr("class", "image-style");
+				image.attr("data-still", imageArray[index].images.fixed_height_still.url);
+				image.attr("data-animate", imageArray[index].images.fixed_height.url);
+				image.attr("data-state", "still");
+				
+				$(countryDiv).append("<p>Rating: " + imageArray[index].rating.toUpperCase() + "</p>");
+				$(countryDiv).append(image);
+				$('#country-images').append(countryDiv);
+			});
+		});
+	}
+
+	// Function to swith betwen still and animated GIPHY images when the user clicks on the iamge
+	function toggleGiphyImages() {
+		var state = $(this).attr("data-state");
+		if (state === "still") {
+			$(this).attr("src", $(this).attr("data-animate"));
+			$(this).attr("data-state", "animate");
+		} else {
+			$(this).attr("src", $(this).attr("data-still"));
+			$(this).attr("data-state", "still");
+		}
+	}
+
+	/* Add submit button code here */
+	$("#country-submit").on("click", function(event) {
+		console.log("Click Submit Button");
+		event.preventDefault();
+		searchTerm = $("#country-input").val().trim();
+		countries.push(searchTerm);
+
+		// Recreate topic buttons with the updated list of countries
+		createTopicButtons();
 	});
-}
 
-function toggleAnimation() {
-	// console.log("toggleAnimation");
-	// $(this).attr("src", "https://media3.giphy.com/media/2YjYpOl1eBy6I/100_s.gif");
-	// console.log(this);
-}
+	// Create buttons from the initial topics array;
+	createTopicButtons();
 
-$(document).on("click", ".country", clickCountryButton);
-$(document).on("click", ".image-style", toggleAnimation);
+	$(document).on("click", ".country", clickCountryButton);
+	$(document).on("click", ".image-style", toggleGiphyImages);
 
+});
