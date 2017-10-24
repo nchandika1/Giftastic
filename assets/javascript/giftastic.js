@@ -31,7 +31,7 @@ $(document).ready(function() {
 		var name = $(this).attr("data-name");
 
 		// AJAX call to get 10 GIPHY images for the chosen topic.  10 is hard coded for now
-		var giphy = $.get("http://api.giphy.com/v1/gifs/search?q=" + name + "&api_key=vfcKAiR8GqpGWVmN6lUpQozaOf9j68Gi&limit=10");
+		var giphy = $.get("https://api.giphy.com/v1/gifs/search?q=" + name + "&api_key=vfcKAiR8GqpGWVmN6lUpQozaOf9j68Gi&limit=10");
 		giphy.done(function(response) {
 
 			// Get the array of GIPHY images from the JSON
